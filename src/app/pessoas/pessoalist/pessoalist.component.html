@@ -1,0 +1,11 @@
+<table>
+    <tr>
+        <td>Nome</td>
+        <td>Idade:</td>
+    </tr>
+    <tr *ngFor = "let pessoa of lista">
+        <th *ngIf = "pessoa.idade > 30">{{pessoa.nome}}</th>
+        <th *ngIf = "pessoa.idade > 30">{{pessoa.idade}}</th>
+    </tr>
+</table>
+
