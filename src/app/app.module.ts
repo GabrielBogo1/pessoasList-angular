@@ -9,6 +9,11 @@ import { FooterComponent } from './layout/footer/footer.component';
 import { PessoasdetailsComponent } from './pessoas/pessoasdetails/pessoasdetails.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { LoginComponent } from './sistema/login/login.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CarroslistComponent } from './carros/carroslist/carroslist.component';
+import { CarrosdetailsComponent } from './carros/carrosdetails/carrosdetails.component';
+import { LivroslistComponent } from './livros/livroslist/livroslist.component';
+import { LivrosdetailsComponent } from './livros/livrosdetails/livrosdetails.component';
 
 @NgModule({
   declarations: [
@@ -18,11 +23,16 @@ import { LoginComponent } from './sistema/login/login.component';
     FooterComponent,
     PessoasdetailsComponent,
     HeaderComponent,
-    LoginComponent
+    LoginComponent,
+    CarroslistComponent,
+    CarrosdetailsComponent,
+    LivroslistComponent,
+    LivrosdetailsComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

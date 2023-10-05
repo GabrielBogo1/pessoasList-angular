@@ -1,11 +1,18 @@
-<table>
-    <tr>
-        <td>Nome</td>
-        <td>Idade:</td>
-    </tr>
-    <tr *ngFor = "let pessoa of lista">
-        <th *ngIf = "pessoa.idade > 30">{{pessoa.nome}}</th>
-        <th *ngIf = "pessoa.idade > 30">{{pessoa.idade}}</th>
-    </tr>
-</table>
+<table class="table caption-top">
+    <caption style="font-size: 42px;">Lista de Pessoas</caption>
+    <thead>
+      <tr >
+        <th scope="col">#</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Idade</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor = "let pessoa of lista">
+        <th scope="row">{{pessoa.id}}</th>
+        <td>{{pessoa.nome}}</td>
+        <td>{{pessoa.idade}}</td>
+      </tr>
+    </tbody>
+  </table>
 
