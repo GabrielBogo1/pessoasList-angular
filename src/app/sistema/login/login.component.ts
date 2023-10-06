@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Usuario } from './usuario';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -7,13 +8,16 @@ import { Usuario } from './usuario';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  constructor() {
-    let usuario = new Usuario();
+  usuario: Usuario = new Usuario("", "");
+  roteador = inject(Router);
 
-    usuario.login = "teste";
-    usuario.senha = "senha123"
+  logar() {
 
-    let estaLogado = false;
+    if (this.usuario.login == "admin" && this.usuario.senha == "senha") {
+      this.roteador.navigate(['/admin/pessoas']);
+    } else {
+      alert('Usuário ou senha incorretos');
+    }
 
   }
 }
