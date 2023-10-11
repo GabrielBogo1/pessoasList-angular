@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Livros } from '../livros';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LivroService } from 'src/app/services/livros/livro.service';
 
 @Component({
   selector: 'app-livroslist',
@@ -9,42 +10,78 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class LivroslistComponent {
   lista: Livros[] = [];
+
+  livroSelecionadoParaEdicao: Livros = new Livros();
+  indiceSelecionadoParaEdicao!: number;
+
   modalService = inject(NgbModal);
+  livroService = inject(LivroService);
 
   constructor() {
-    let livro1 = new Livros();
-    livro1.id = 1;
-    livro1.autor = "Autor1";
-    livro1.nome = "Nome1";
 
-    let livro2 = new Livros();
-    livro2.id = 2;
-    livro2.autor = "Autor2";
-    livro2.nome = "Nome2";
-
-    let livro3 = new Livros();
-    livro3.id = 3;
-    livro3.autor = "Autor3";
-    livro3.nome = "Nome3";
-
-    let livro4 = new Livros();
-    livro4.id = 4;
-    livro4.autor = "Autor4";
-    livro4.nome = "Nome4";
-
-    this.lista.push(livro1);
-    this.lista.push(livro2);
-    this.lista.push(livro3);
-    this.lista.push(livro4);
+    this.listAll();
+    //this.exemploErro();
 
   }
 
-  abrirModal(abc: any) {
-    this.modalService.open(abc, { size: 'lg' });
+
+  listAll() {
+
+    this.livroService.listAll().subscribe({
+      next: lista => { // QUANDO DÁ CERTO
+        this.lista = lista;
+      },
+      error: erro => { // QUANDO DÁ ERRO
+        alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
+        console.error(erro);
+      }
+    });
+
   }
 
-  listAdd(livro: Livros) {
-    this.lista.push(livro);
+  exemploErro() {
+
+    this.livroService.exemploErro().subscribe({
+      next: lista => { // QUANDO DÁ CERTO
+        this.lista = lista;
+      },
+      error: erro => { // QUANDO DÁ ERRO
+        alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
+        console.error(erro);
+      }
+    });
+
+  }
+
+
+  adicionar(modal: any) {
+    this.livroSelecionadoParaEdicao = new Livros();
+
+    this.modalService.open(modal, { size: 'sm' });
+  }
+
+  editar(modal: any, livro: Livros, indice: number) {
+    this.livroSelecionadoParaEdicao = Object.assign({}, livro); //clonando o objeto se for edição... pra não mexer diretamente na referência da lista
+    this.indiceSelecionadoParaEdicao = indice;
+
+    this.modalService.open(modal, { size: 'sm' });
+  }
+
+  addOuEditarLivro(livro: Livros) {
+
+    this.listAll();
+
+    /*
+
+    if (this.pessoaSelecionadaParaEdicao.id > 0) { //MODO EDITAR
+      this.lista[this.indiceSelecionadoParaEdicao] = pessoa;
+    } else {
+      pessoa.id = 99;
+      this.lista.push(pessoa);
+    }
+    */
+
     this.modalService.dismissAll();
+
   }
 }

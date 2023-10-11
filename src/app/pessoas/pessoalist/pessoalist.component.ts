@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { pessoa } from '../pessoa';
+import { Pessoa } from '../pessoa';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PessoaService } from 'src/app/services/pessoa.service';
 
 @Component({
   selector: 'app-pessoalist',
@@ -8,45 +9,80 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./pessoalist.component.scss']
 })
 export class PessoalistComponent {
-  lista: pessoa[] = [];
+  lista: Pessoa[] = [];
+
+  pessoaSelecionadaParaEdicao: Pessoa = new Pessoa();
+  indiceSelecionadoParaEdicao!: number;
+
   modalService = inject(NgbModal);
+  pessoaService = inject(PessoaService);
 
   constructor() {
-    let pessoa1: pessoa = new pessoa();
 
-    pessoa1.id = 1;
-    pessoa1.nome = "PessoaTeste1";
-    pessoa1.idade = 20;
+    this.listAll();
+    //this.exemploErro();
 
-    let pessoa2: pessoa = new pessoa();
-    pessoa2.id = 2;
-    pessoa2.nome = "PessoaTeste2";
-    pessoa2.idade = 30;
-
-    let pessoa3: pessoa = new pessoa();
-    pessoa3.id = 3;
-    pessoa3.nome = "PessoaTeste3";
-    pessoa3.idade = 40;
-
-    let pessoa4: pessoa = new pessoa();
-    pessoa4.id = 4;
-    pessoa4.nome = "PessoaTeste4";
-    pessoa4.idade = 50;
-
-
-
-    this.lista.push(pessoa1);
-    this.lista.push(pessoa2);
-    this.lista.push(pessoa3);
-    this.lista.push(pessoa4);
   }
 
-  abrirModal(abc: any){
-    this.modalService.open(abc, { size: 'lg' });
+
+  listAll() {
+
+    this.pessoaService.listAll().subscribe({
+      next: lista => { // QUANDO DÁ CERTO
+        this.lista = lista;
+      },
+      error: erro => { // QUANDO DÁ ERRO
+        alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
+        console.error(erro);
+      }
+    });
+
   }
 
-  listAdd(pessoa: pessoa){
-    this.lista.push(pessoa);
+  exemploErro() {
+
+    this.pessoaService.exemploErro().subscribe({
+      next: lista => { // QUANDO DÁ CERTO
+        this.lista = lista;
+      },
+      error: erro => { // QUANDO DÁ ERRO
+        alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
+        console.error(erro);
+      }
+    });
+
+  }
+
+
+  adicionar(modal: any) {
+    this.pessoaSelecionadaParaEdicao = new Pessoa();
+
+    this.modalService.open(modal, { size: 'sm' });
+  }
+
+  editar(modal: any, pessoa: Pessoa, indice: number) {
+    this.pessoaSelecionadaParaEdicao = Object.assign({}, pessoa); //clonando o objeto se for edição... pra não mexer diretamente na referência da lista
+    this.indiceSelecionadoParaEdicao = indice;
+
+    this.modalService.open(modal, { size: 'sm' });
+  }
+
+  addOuEditarPessoa(pessoa: Pessoa) {
+
+    this.listAll();
+
+    /*
+
+    if (this.pessoaSelecionadaParaEdicao.id > 0) { //MODO EDITAR
+      this.lista[this.indiceSelecionadoParaEdicao] = pessoa;
+    } else {
+      pessoa.id = 99;
+      this.lista.push(pessoa);
+    }
+    */
+
     this.modalService.dismissAll();
+
   }
+
 }

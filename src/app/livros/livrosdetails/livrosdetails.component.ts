@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Livros } from '../livros';
+import { LivroService } from 'src/app/services/livros/livro.service';
 
 @Component({
   selector: 'app-livrosdetails',
@@ -9,13 +10,27 @@ import { Livros } from '../livros';
 })
 export class LivrosdetailsComponent {
 
-  roteador = inject(ActivatedRoute);
-  livro: Livros = new Livros();
-
+  @Input() livro: Livros = new Livros();
   @Output() retorno = new EventEmitter<Livros>();
 
+  livroService = inject(LivroService);
+
+  constructor() {
+
+  }
 
   salvar() {
-    this.retorno.emit(this.livro);
+    //ISSO AQUI SERVE PARA EDITAR OU ADICIONAR... TANTO FAZ
+
+    this.livroService.save(this.livro).subscribe({
+      next: livro => { // QUANDO DÁ CERTO
+        this.retorno.emit(livro);
+      },
+      error: erro => { // QUANDO DÁ ERRO
+        alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
+        console.error(erro);
+      }
+    });
+
   }
 }

@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Carro } from '../carros';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CarroService } from 'src/app/services/carros/carro.service';
 
 @Component({
   selector: 'app-carroslist',
@@ -9,46 +10,79 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class CarroslistComponent {
   lista: Carro[] = [];
-  modalService = inject(NgbModal);
 
+  carroSelecionadaParaEdicao: Carro = new Carro();
+  indiceSelecionadoParaEdicao!: number;
+
+  modalService = inject(NgbModal);
+  carroService = inject(CarroService);
 
   constructor() {
-    let carro1 = new Carro();
 
-    carro1.id = 1;
-    carro1.marca = "Marca1";
-    carro1.ano = 2000;
+    this.listAll();
+    //this.exemploErro();
 
-    let carro2 = new Carro();
-
-    carro2.id = 2;
-    carro2.marca = "Marca2";
-    carro2.ano = 2001;
-
-    let carro3 = new Carro();
-
-    carro3.id = 3;
-    carro3.marca = "Marca3";
-    carro3.ano = 2002;
-
-    let carro4 = new Carro();
-
-    carro4.id = 4;
-    carro4.marca = "Marca4";
-    carro4.ano = 2003;
-
-    this.lista.push(carro1);
-    this.lista.push(carro2);
-    this.lista.push(carro3);
-    this.lista.push(carro4);
   }
 
-  abrirModal(abc: any) {
-    this.modalService.open(abc, { size: 'lg' });
+
+  listAll() {
+
+    this.carroService.listAll().subscribe({
+      next: lista => { // QUANDO DÁ CERTO
+        this.lista = lista;
+      },
+      error: erro => { // QUANDO DÁ ERRO
+        alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
+        console.error(erro);
+      }
+    });
+
   }
 
-  listAdd(carro: Carro) {
-    this.lista.push(carro);
+  exemploErro() {
+
+    this.carroService.exemploErro().subscribe({
+      next: lista => { // QUANDO DÁ CERTO
+        this.lista = lista;
+      },
+      error: erro => { // QUANDO DÁ ERRO
+        alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
+        console.error(erro);
+      }
+    });
+
+  }
+
+
+  adicionar(modal: any) {
+    this.carroSelecionadaParaEdicao = new Carro();
+
+    this.modalService.open(modal, { size: 'sm' });
+  }
+
+  editar(modal: any, carro: Carro, indice: number) {
+    this.carroSelecionadaParaEdicao = Object.assign({}, carro); //clonando o objeto se for edição... pra não mexer diretamente na referência da lista
+    this.indiceSelecionadoParaEdicao = indice;
+
+    this.modalService.open(modal, { size: 'sm' });
+  }
+
+  addOuEditarCarro(carro: Carro) {
+
+    this.listAll();
+
+    /*
+
+    if (this.pessoaSelecionadaParaEdicao.id > 0) { //MODO EDITAR
+      this.lista[this.indiceSelecionadoParaEdicao] = pessoa;
+    } else {
+      pessoa.id = 99;
+      this.lista.push(pessoa);
+    }
+    */
+
     this.modalService.dismissAll();
+
   }
+
 }
