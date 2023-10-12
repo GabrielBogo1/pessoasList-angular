@@ -18,10 +18,7 @@ export class PessoalistComponent {
   pessoaService = inject(PessoaService);
 
   constructor() {
-
     this.listAll();
-    //this.exemploErro();
-
   }
 
 
@@ -67,6 +64,7 @@ export class PessoalistComponent {
     this.modalService.open(modal, { size: 'sm' });
   }
 
+
   addOuEditarPessoa(pessoa: Pessoa) {
 
     this.listAll();
@@ -80,9 +78,20 @@ export class PessoalistComponent {
       this.lista.push(pessoa);
     }
     */
+  }
 
-    this.modalService.dismissAll();
 
+  deletar(id: number) {
+    this.pessoaService.delete(id).subscribe({
+      next: retorno => { // QUANDO DÁ CERTO
+        this.listAll();
+      },
+      error: erro => { // QUANDO DÁ ERRO
+        alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
+        console.error(erro);
+      }
+    });
   }
 
 }
+

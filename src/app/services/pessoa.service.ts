@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Pessoa } from '../pessoas/pessoa';
 
-import {HttpClient} from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -21,6 +21,17 @@ export class PessoaService {
 
   save(pessoa: Pessoa): Observable<Pessoa> {
     return this.http.post<Pessoa>(this.API, pessoa);
+  }
+
+  update(pessoa: Pessoa): Observable<Pessoa> {
+    return this.http.put<Pessoa>(this.API, pessoa);
+  }
+
+  delete(id: number): Observable<any> {
+
+    let params = new HttpParams()
+      .set('id', id.toString())
+    return this.http.delete<any>(this.API, { params: params });
   }
 
   exemploErro(): Observable<Pessoa[]> {

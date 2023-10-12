@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Livros } from 'src/app/livros/livros';
@@ -21,6 +21,17 @@ export class LivroService {
 
   save(livro: Livros): Observable<Livros> {
     return this.http.post<Livros>(this.API, livro);
+  }
+
+  update(livro: Livros): Observable<Livros> {
+    return this.http.put<Livros>(this.API, livro);
+  }
+
+  delete(id: number): Observable<any> {
+
+    let params = new HttpParams()
+      .set('id', id.toString())
+    return this.http.delete<any>(this.API, { params: params });
   }
 
   exemploErro(): Observable<Livros[]> {

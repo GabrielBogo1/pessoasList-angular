@@ -20,17 +20,37 @@ export class LivrosdetailsComponent {
   }
 
   salvar() {
-    //ISSO AQUI SERVE PARA EDITAR OU ADICIONAR... TANTO FAZ
-
-    this.livroService.save(this.livro).subscribe({
-      next: livro => { // QUANDO DÁ CERTO
+    if (this.livro.id > 0) {
+      this.livroService.update(this.livro).subscribe({
+        next: livro => { // QUANDO DÁ CERTO
+          this.retorno.emit(livro);
+        },
+        error: erro => { // QUANDO DÁ ERRO
+          alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
+          console.error(erro);
+        }
+      });
+    } else {
+      this.livroService.save(this.livro).subscribe({
+        next: pessoa => {
+          this.retorno.emit(pessoa);
+        },
+        error: erro => {
+          alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
+          console.error(erro);
+        }
+      });
+    }
+  }
+  deletar() {
+    this.livroService.delete(this.livro.id).subscribe({
+      next: livro => {
         this.retorno.emit(livro);
       },
-      error: erro => { // QUANDO DÁ ERRO
+      error: erro => {
         alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
         console.error(erro);
       }
     });
-
   }
 }

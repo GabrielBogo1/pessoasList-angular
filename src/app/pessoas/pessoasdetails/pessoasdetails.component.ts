@@ -21,17 +21,37 @@ export class PessoasdetailsComponent {
   }
 
   salvar() {
-    //ISSO AQUI SERVE PARA EDITAR OU ADICIONAR... TANTO FAZ
-
-    this.pessoaService.save(this.pessoa).subscribe({
-      next: pessoa => { // QUANDO DÁ CERTO
+    if (this.pessoa.id > 0) {
+      this.pessoaService.update(this.pessoa).subscribe({
+        next: pessoa => { // QUANDO DÁ CERTO
+          this.retorno.emit(pessoa);
+        },
+        error: erro => { // QUANDO DÁ ERRO
+          alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
+          console.error(erro);
+        }
+      });
+    } else {
+      this.pessoaService.save(this.pessoa).subscribe({
+        next: pessoa => {
+          this.retorno.emit(pessoa);
+        },
+        error: erro => {
+          alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
+          console.error(erro);
+        }
+      });
+    }
+  }
+  deletar() {
+    this.pessoaService.delete(this.pessoa.id).subscribe({
+      next: pessoa => {
         this.retorno.emit(pessoa);
       },
-      error: erro => { // QUANDO DÁ ERRO
+      error: erro => {
         alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
         console.error(erro);
       }
     });
-
   }
 }

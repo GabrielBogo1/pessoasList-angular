@@ -19,17 +19,37 @@ export class CarrosdetailsComponent {
   }
 
   salvar() {
-    //ISSO AQUI SERVE PARA EDITAR OU ADICIONAR... TANTO FAZ
-
-    this.carroService.save(this.carro).subscribe({
-      next: carro => { // QUANDO DÁ CERTO
-        this.retorno.emit(carro);
+    if (this.carro.id > 0) {
+      this.carroService.update(this.carro).subscribe({
+        next: carro => { // QUANDO DÁ CERTO
+          this.retorno.emit(carro);
+        },
+        error: erro => { // QUANDO DÁ ERRO
+          alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
+          console.error(erro);
+        }
+      });
+    } else {
+      this.carroService.save(this.carro).subscribe({
+        next: carro => {
+          this.retorno.emit(carro);
+        },
+        error: erro => {
+          alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
+          console.error(erro);
+        }
+      });
+    }
+  }
+  deletar() {
+    this.carroService.delete(this.carro.id).subscribe({
+      next: livro => {
+        this.retorno.emit(livro);
       },
-      error: erro => { // QUANDO DÁ ERRO
+      error: erro => {
         alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
         console.error(erro);
       }
     });
-
   }
 }

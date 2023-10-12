@@ -53,12 +53,12 @@ export class LivroslistComponent {
 
   }
 
-
   adicionar(modal: any) {
     this.livroSelecionadoParaEdicao = new Livros();
 
     this.modalService.open(modal, { size: 'sm' });
   }
+
 
   editar(modal: any, livro: Livros, indice: number) {
     this.livroSelecionadoParaEdicao = Object.assign({}, livro); //clonando o objeto se for edição... pra não mexer diretamente na referência da lista
@@ -66,6 +66,7 @@ export class LivroslistComponent {
 
     this.modalService.open(modal, { size: 'sm' });
   }
+
 
   addOuEditarLivro(livro: Livros) {
 
@@ -83,5 +84,17 @@ export class LivroslistComponent {
 
     this.modalService.dismissAll();
 
+  }
+
+  deletar(id: number) {
+    this.livroService.delete(id).subscribe({
+      next: retorno => { // QUANDO DÁ CERTO
+        this.listAll();
+      },
+      error: erro => { // QUANDO DÁ ERRO
+        alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
+        console.error(erro);
+      }
+    });
   }
 }

@@ -85,4 +85,16 @@ export class CarroslistComponent {
 
   }
 
+  deletar(id: number) {
+    this.carroService.delete(id).subscribe({
+      next: retorno => { // QUANDO DÁ CERTO
+        this.listAll();
+      },
+      error: erro => { // QUANDO DÁ ERRO
+        alert('Exemplo de tratamento de erro/exception! Observe o erro no console!');
+        console.error(erro);
+      }
+    });
+  }
+
 }

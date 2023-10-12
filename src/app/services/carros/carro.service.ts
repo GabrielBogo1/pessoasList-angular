@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Carro } from 'src/app/carros/carros';
@@ -25,4 +25,16 @@ export class CarroService {
   exemploErro(): Observable<Carro[]> {
     return this.http.get<Carro[]>(this.API + '/erro');
   }
+
+  update(carro: Carro): Observable<Carro> {
+    return this.http.put<Carro>(this.API, carro);
+  }
+
+  delete(id: number): Observable<any> {
+
+    let params = new HttpParams()
+      .set('id', id.toString())
+    return this.http.delete<any>(this.API, { params: params });
+  }
+
 }
