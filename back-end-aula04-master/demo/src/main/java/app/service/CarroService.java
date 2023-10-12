@@ -2,6 +2,7 @@ package app.service;
 
 import app.dto.CarroDTO;
 import app.entity.Carro;
+import app.entity.Livro;
 import app.repository.CarroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,11 @@ public class CarroService {
         Carro carroSalvo = carroRepository.save(carro);
 
         return this.toCarroDTO(carroSalvo);
+    }
+
+    public void delete(Long id) {
+        final Carro carroBanco = this.carroRepository.findById(id).orElse(null);
+        this.carroRepository.delete(carroBanco);
     }
 
     private CarroDTO toCarroDTO(Carro carro) {

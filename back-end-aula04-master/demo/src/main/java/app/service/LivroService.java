@@ -2,6 +2,7 @@ package app.service;
 
 import app.dto.LivroDTO;
 import app.entity.Livro;
+import app.entity.Pessoa;
 import app.repository.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,5 +47,10 @@ public class LivroService {
         livro.setNome(livroDTO.getNome());
         livro.setAutor(livroDTO.getAutor());
         return livro;
+    }
+
+    public void delete(Long id) {
+        final Livro livroBanco = this.livroRepository.findById(id).orElse(null);
+        this.livroRepository.delete(livroBanco);
     }
 }

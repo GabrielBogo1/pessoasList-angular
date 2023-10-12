@@ -34,6 +34,10 @@ public class PessoaService {
 		return this.toPessoaDTO(pessoasalva);
 	}
 
+	public void delete(final Long id){
+		final Pessoa pessoaBanco = this.pessoaRepository.findById(id).orElse(null);
+		this.pessoaRepository.delete(pessoaBanco);
+	}
 	private PessoaDTO toPessoaDTO(Pessoa pessoa) {
 		PessoaDTO pessoaDTO = new PessoaDTO();
 		pessoaDTO.setId(pessoa.getId());

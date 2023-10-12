@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.dto.CarroDTO;
+import app.dto.PessoaDTO;
 import app.service.CarroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,11 +28,32 @@ public class CarroController {
         }
     }
 
+    @PutMapping
+    public ResponseEntity <CarroDTO> update (@RequestBody CarroDTO carroDTO){
+        try {
+            CarroDTO carroSalvo = carroService.save(carroDTO);
+            return new ResponseEntity<>(carroSalvo, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping
     private ResponseEntity<CarroDTO> save(@RequestBody CarroDTO carroDTO){
         try {
             CarroDTO carrroSalvo = carroService.save(carroDTO);
             return new ResponseEntity<>(carrroSalvo, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @DeleteMapping
+    public ResponseEntity <HttpStatus> delete (@RequestParam ("id") final Long id){
+        try {
+            this.carroService.delete(id);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
